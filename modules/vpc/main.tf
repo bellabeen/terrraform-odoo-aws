@@ -80,7 +80,7 @@ resource "aws_eip" "nat_eip" {
 # Assosiated Subnet Private EC2 With NAT Gateway
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.subnet_private_ec2[0].id  # Assuming you want to use the first private subnet for EC2 instances with NAT Gateway
+  subnet_id     = aws_subnet.subnet_public[0].id  # Assuming you want to use the first private subnet for EC2 instances with NAT Gateway
   tags = {
     Name = "Default NAT Gateway"
     # Add more tags as needed
@@ -92,16 +92,6 @@ resource "aws_route" "private_subnet_route" {
   route_table_id         = aws_route_table.private_rt.id
   destination_cidr_block = "0.0.0.0/0"  # Default route for NAT Gateway
   gateway_id             = aws_nat_gateway.nat_gateway.id
-}
-
-# Create tags for the default route table
-resource "aws_default_route_table" "default_rt" {
-  default_route_table_id = aws_vpc.main.default_route_table_id  # Reference the default route table associated with the VPC
-
-  tags = {
-    Name = "Main Route Table"
-    # Add more tags as needed
-  }
 }
 
 # Create Private Subnet DB On 3 Availbility Zone
