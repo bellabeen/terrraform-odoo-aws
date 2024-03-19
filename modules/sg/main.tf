@@ -72,7 +72,7 @@ resource "aws_security_group" "app_security_group" {
     description = var.all_description_egress
     from_port   = 0
     to_port     = 0
-    protocol    = "-1"
+    protocol    = var.aws_local_protocol_icmp
   }
 
   ingress {
@@ -101,3 +101,49 @@ resource "aws_security_group" "app_security_group" {
 
   tags = var.sg_app_tags
 }
+
+resource "aws_security_group" "efs_security_group" {
+  name        = var.sg_efs_name
+  description = var.sg_efs_description
+  vpc_id      = var.vpc_id
+
+  egress {
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "open all egress"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+  }
+
+  ingress {
+    cidr_blocks = var.efs_ingress_cidr_blocks
+    description = "from EC2 Subnet Avaibility Zone"
+    from_port   = 2049
+    to_port     = 2049
+    protocol    = "tcp"
+  }
+
+  tags = var.sg_efs_tags
+}
+
+resource "aws_security_group_rule" "efs_ingress_app" {
+  depends_on               = [aws_security_group.efs_security_group]
+  type                     = "ingress"
+  from_port                = 2049
+  to_port                  = 2049
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.app_security_group.id
+  security_group_id        = aws_security_group.efs_security_group.id
+}
+
+resource "aws_security_group_rule" "app_ingress_efs" {
+  depends_on               = [aws_security_group.efs_security_group]
+  type                     = "ingress"
+  from_port                = 2049
+  to_port                  = 2049
+  protocol                 = "tcp"
+  source_security_group_id = aws_security_group.efs_security_group.id
+  security_group_id        = aws_security_group.app_security_group.id
+}
+
+# Add similar blocks for other ingress rules as needed

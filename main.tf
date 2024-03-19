@@ -69,6 +69,7 @@ module "sg" {
   # Inherit another module
   vpc_id = module.vpc.vpc_id
   aws_local_cidr_blocks = [module.vpc.vpc_cidr_block]
+  efs_ingress_cidr_blocks = ["172.31.0.0/16"]  # Example CIDR blocks for EFS ingress
 
   aws_all_cidr_blocks = ["0.0.0.0/0"]
   aws_local_cidr_ipv4_blocks = ["20.0.0.0/16"]
@@ -122,5 +123,10 @@ module "sg" {
   sg_app_tags = {
     "Name"               = "SG-APP-CONTOH"
   }
-
+  
+  sg_efs_name = "SG-EFS-CONTOH"
+  sg_efs_description = "Security group for EFS CONTOH"
+  sg_efs_tags = {
+    "Name"               = "SG-EFS-CONTOH"
+  }
 }

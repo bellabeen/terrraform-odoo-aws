@@ -159,3 +159,20 @@ variable "aws_local_to_port_icmp" {
   description = "The end port for AWS local access"
 }
 
+variable "sg_efs_name" {
+  description = "Description for the EFS security group"
+}
+
+variable "sg_efs_description" {
+  description = "The description of the security group"
+}
+
+variable "efs_ingress_cidr_blocks" {
+  description = "CIDR blocks for EFS ingress rules."
+  type        = list(string)
+}
+
+variable "sg_efs_tags" {
+  description = "A map of tags to assign to the security group."
+  type        = map(string)
+}
