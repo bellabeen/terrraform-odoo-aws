@@ -67,20 +67,16 @@ module "sg" {
   source = "./modules/sg"
 
   vpc_id                  = module.vpc.vpc_id
-  sg_name                 = "SG-DB-TEDS-ASP"
-  sg_description          = "Security group for DB TEDS ASP"
+  sg_db_name              = "SG-DB-CONTOH"
+  sg_db_description = "Security group for DB CONTOH"
   aws_local_cidr_blocks   = ["172.31.0.0/16"]
   aws_local_from_port     = 5432
   aws_local_to_port       = 5432
   ssl_vpn_cidr_blocks     = ["10.212.133.0/24"]
   ssl_vpn_from_port       = 5432
   ssl_vpn_to_port         = 5432
-  sg_tags = {
-    "Name"               = "SG-DB-TEDS-ASP"
-    "Project"            = "TEDS ASP on AWS"
-    "tunas:application-id" = "TEDS"
-    "tunas:cost-center" = "ASP"
-    "tunas:env"          = "prod"
-    "created:by"         = "Terraform"
+  sg_db_tags = {
+    "Name"               = "SG-DB-CONTOH"
+
   }
 }
