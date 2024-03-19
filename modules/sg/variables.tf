@@ -19,7 +19,7 @@ variable "aws_local_to_db_port" {
   description = "The end port for AWS local access"
 }
 
-variable "ssl_vpn_cidr_blocks" {
+variable "ssl_vpn_ho_cidr_blocks" {
   description = "CIDR blocks for SSL VPN access"
   type        = list(string)
 }
@@ -75,10 +75,6 @@ variable "aws_local_cidr_ipv4_blocks" {
   description = "CIDR blocks for AWS local access"
 }
 
-variable "aws_local_cidr_blocks" {
-  description = "CIDR blocks for AWS local access"
-  type        = list(string)
-}
 
 variable "all_access_egress" {
   description = "The end port for AWS local access"
@@ -87,4 +83,32 @@ variable "all_access_egress" {
 variable "all_access_cidr_block_egress" {
   description = "CIDR blocks for AWS local access"
   type        = list(string)
+}
+variable "aws_local_cidr_blocks" {
+  description = "CIDR blocks for AWS local access"
+  type        = list(string)
+}
+
+variable "aws_local_description" {
+  description = "The end port for AWS local access"
+}
+
+variable "ssl_vpn_ho_description" {
+  description = "The end port for AWS local access"
+}
+
+variable "aws_local_to_https_description" {
+  description = "The end port for AWS local access"
+}
+
+variable "aws_local_to_http_description" {
+  description = "The end port for AWS local access"
+}
+
+variable "aws_local_to_http_port" {
+  description = "The end port for AWS local access"
+}
+
+variable "aws_local_from_http_port" {
+  description = "The end port for AWS local access"
 }

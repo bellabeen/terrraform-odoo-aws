@@ -66,22 +66,31 @@ variable "availability_zone" {
 module "sg" {
   source = "./modules/sg"
   vpc_id = module.vpc.vpc_id
+  aws_local_cidr_blocks = [module.vpc.vpc_cidr_block]
+  aws_local_cidr_ipv4_blocks = ["20.0.0.0/16"]
+  aws_local_description ="AWS Local Segment"
   all_description_egress = "open all egress"
   all_access_egress = ["0.0.0.0/0"]
   all_access_cidr_block_egress = ["0.0.0.0/0"]
   
   aws_all_cidr_blocks = ["0.0.0.0/0"]
 
-  aws_local_cidr_ipv4_blocks = ["20.0.0.0/16"]
-  aws_local_cidr_blocks = ["20.0.0.0/16"]
   aws_local_from_db_port = 5432
   aws_local_to_db_port = 5432
+
   aws_local_from_https_port = 443
   aws_local_to_https_port = 443
+  aws_local_to_https_description = "All access ALB from https"
   
-  ssl_vpn_cidr_blocks     = ["10.212.133.0/24"]
+  aws_local_from_http_port = 80
+  aws_local_to_http_port = 80
+  aws_local_to_http_description = "All access ALB from http"
+
+  ssl_vpn_ho_cidr_blocks = ["10.212.133.0/24"]
+  ssl_vpn_ho_description = "SSL VPN 200F HO"
   ssl_vpn_from_db_port = 5432
   ssl_vpn_to_db_port = 5432
+  
   
   sg_db_name = "SG-DB-CONTOH"
   sg_db_description = "Security group for DB CONTOH"
@@ -91,6 +100,8 @@ module "sg" {
 
   sg_alb_name = "SG-ALB-CONTOH"
   sg_alb_description = "Security group for ALB CONTOH"
-  
+  sg_alb_tags = {
+    "Name"               = "SG-ALB-CONTOH"
+  }
 
 }
