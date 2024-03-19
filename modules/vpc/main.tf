@@ -7,14 +7,24 @@ resource "aws_vpc" "main" {
   } 
 }
 
+# Create tags for the default route table
+resource "aws_default_route_table" "default_rt" {
+  default_route_table_id = aws_vpc.main.default_route_table_id  # Reference the default route table associated with the VPC
+
+  tags = {
+    Name = "Main Route Table"
+    # Add more tags as needed
+  }
+}
+
 # Create Public Subnet on 3 Availbility Zone
 resource "aws_subnet" "subnet_public" {
-  count = length(var.subnet_public_cidr)
-  vpc_id = aws_vpc.main.id
-  cidr_block = element(var.subnet_public_cidr, count.index)
+  count             = length(var.subnet_public_cidr)
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = element(var.subnet_public_cidr, count.index)
   availability_zone = element(var.availability_zone, count.index)
   tags = {
-    Name = "Public Subnet ${count.index + 1}"
+    Name = "Public Subnet ${element(["A", "B", "C"], count.index)}"  # Append AZ identifier to subnet name
   }
 }
 

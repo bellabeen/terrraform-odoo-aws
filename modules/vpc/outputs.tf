@@ -3,6 +3,12 @@ output "id" {
   value = aws_vpc.main.id
 }
 
+output "vpc_id" {
+  description = "The ID of the VPC"
+  value       = aws_vpc.main.id
+}
+
+
 output "route_table_id" {
   description = "Route Table Main Block"
   value = aws_vpc.main.default_route_table_id
