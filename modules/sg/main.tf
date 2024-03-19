@@ -4,26 +4,26 @@ resource "aws_security_group" "db_security_group" {
   vpc_id      = var.vpc_id
 
   egress {
-    cidr_blocks = var.aws_local_cidr_blocks
-    description = "open all egress"
-    from_port   = var.aws_local_from_port
-    to_port     = var.aws_local_to_port
+    cidr_blocks = var.all_access_cidr_block_egress
+    description = var.all_description_egress
+    from_port   = var.aws_local_from_db_port
+    to_port     = var.aws_local_to_db_port
     protocol    = "tcp"
   }
 
   ingress {
     cidr_blocks = var.aws_local_cidr_blocks
     description = "AWS Local"
-    from_port   = var.aws_local_from_port
-    to_port     = var.aws_local_to_port
+    from_port   = var.aws_local_from_db_port
+    to_port     = var.aws_local_to_db_port
     protocol    = "tcp"
   }
 
   ingress {
     cidr_blocks = var.ssl_vpn_cidr_blocks
     description = "SSL VPN Access"
-    from_port   = var.ssl_vpn_from_port
-    to_port     = var.ssl_vpn_to_port
+    from_port   = var.ssl_vpn_from_db_port
+    to_port     = var.ssl_vpn_to_db_port
     protocol    = "tcp"
   }
 
@@ -31,12 +31,12 @@ resource "aws_security_group" "db_security_group" {
 }
 
 resource "aws_security_group" "alb_security_group" {
-  name        = "SG-ALB-CONTOH"
-  description = "Security group for ALB CONTOH"
+  name        = var.sg_alb_name
+  description = var.sg_alb_description
   vpc_id      = var.vpc_id
 
   egress {
-    cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = var.aws_all_cidr_blocks
     description = "open all egress"
     from_port   = 0
     to_port     = 0
@@ -44,10 +44,10 @@ resource "aws_security_group" "alb_security_group" {
   }
 
   ingress {
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "All"
-    from_port   = 443
-    to_port     = 443
+    cidr_blocks = var.aws_all_cidr_blocks
+    description = "All access ALB from https"
+    from_port   = var.aws_local_from_https_port
+    to_port     = var.aws_local_to_https_port
     protocol    = "tcp"
   }
 
