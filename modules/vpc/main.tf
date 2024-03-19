@@ -97,7 +97,7 @@ resource "aws_nat_gateway" "nat_gateway" {
   }
 }
 
-
+# Integration Subnet Private To NAT Gateway
 resource "aws_route" "private_subnet_route" {
   route_table_id         = aws_route_table.private_rt.id
   destination_cidr_block = "0.0.0.0/0"  # Default route for NAT Gateway

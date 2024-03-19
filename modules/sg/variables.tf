@@ -40,10 +40,6 @@ variable "sg_db_tags" {
 variable "sg_alb_tags" {
   description = "A map of tags to assign to the security group."
   type        = map(string)
-  default     = {
-    "Name"               = "SG-ALB-CONTOH"
-    "created:by"         = "Terraform"
-  }
 }
 
 variable "sg_alb_name" {
@@ -112,3 +108,54 @@ variable "aws_local_to_http_port" {
 variable "aws_local_from_http_port" {
   description = "The end port for AWS local access"
 }
+
+variable "sg_app_tags" {
+  description = "A map of tags to assign to the security group."
+  type        = map(string)
+}
+
+variable "sg_app_name" {
+  description = "The name of the security group"
+}
+
+variable "sg_app_description" {
+  description = "The description of the security group"
+}
+
+variable "aws_local_from_xmlrpc_port" {
+  description = "The end port for AWS local access"
+}
+
+variable "aws_local_to_xmlrpc_port" {
+  description = "The end port for AWS local access"
+}
+
+variable "aws_local_protocol_tcp" {
+  description = "The end port for AWS local access"
+}
+
+variable "aws_local_protocol_icmp" {
+  description = "The end port for AWS local access"
+}
+
+variable "aws_local_protocol_ssh" {
+  description = "The end port for AWS local access"
+}
+
+variable "aws_local_from_port_ssh" {
+  description = "The end port for AWS local access"
+}
+
+
+variable "aws_local_to_port_ssh" {
+  description = "The end port for AWS local access"
+}
+
+variable "aws_local_from_port_icmp" {
+  description = "The end port for AWS local access"
+}
+
+variable "aws_local_to_port_icmp" {
+  description = "The end port for AWS local access"
+}
+

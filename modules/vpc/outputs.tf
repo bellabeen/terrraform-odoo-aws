@@ -13,6 +13,10 @@ output "vpc_cidr_block" {
   value       = aws_vpc.main.cidr_block
 }
 
+output "nat_gateway_id" {
+  description = "NAT Gateway ID"
+  value = aws_nat_gateway.nat_gateway.id
+}
 
 output "route_table_id" {
   description = "Route Table Main Block"
