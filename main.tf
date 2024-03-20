@@ -106,14 +106,6 @@ module "sg" {
   }
 }
 
-# module "alb" {
-#  source = "./modules/ec2/alb"
-
-#   # Inherit another module
-#   subnet_public = [module.vpc.public_subnet_cidr_blocks]
-#   public_subnet_ids = [module.vpc.public_subnet_ids]
-#   alb_security_group  = module.sg.alb_security_group_id
-# }
 
 module "alb" {
   source = "./modules/ec2/alb"
@@ -122,7 +114,7 @@ module "alb" {
   vpc                 = module.vpc.vpc_id
   public_subnet_ids   = module.vpc.public_subnet_ids
   alb_security_group  = module.sg.alb_security_group_id
- alb_certificate_arn = module.acm_certificate.acm_certificate_arn
+  alb_certificate_arn = module.acm_certificate.acm_certificate_arn
 }
 
 module "acm_certificate" {
@@ -130,6 +122,13 @@ module "acm_certificate" {
   # You can provide necessary variables here
 }
 
+module "waf" {
+  source = "./modules/waf"
+  # You can provide necessary variables here
+  # managed_rules = aws_wafv2_web_acl.web_acl.rule
+  # web_acl_arn = aws_wafv2_web_acl.web_acl.arn
+  alb_arn = module.alb.alb_app
+}
 
 # module "route53" {
 #   source = "./modules/route53"
