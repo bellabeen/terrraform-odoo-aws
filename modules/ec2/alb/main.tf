@@ -46,22 +46,20 @@ resource "aws_lb_listener" "http_listener" {
   }
 }
 
-# resource "aws_lb_listener" "https_listener" {
-#   load_balancer_arn = aws_lb.alb.arn
-#   port              = 443
-#   protocol          = "HTTPS"
-#   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
-#   # certificate_arn = var.alb_certificate_arn
-#   # certificate_arn = "arn:aws:acm:ap-southeast-1:220263045021:certificate/4dc2c634-e89f-48af-a34d-50193760bcf7"
+resource "aws_lb_listener" "https_listener" {
+  load_balancer_arn = aws_lb.alb.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
+  certificate_arn = var.alb_certificate_arn
+  # certificate_arn = "arn:aws:acm:ap-southeast-1:030150888082:certificate/8864d186-ff65-47a2-867b-e365e893a476"
 
-#     default_action {
-#         type             = "forward"
-#         target_group_arn = aws_lb_target_group.tg.arn
+    default_action {
+        type             = "forward"
+        target_group_arn = aws_lb_target_group.tg.arn
         
-#     }
-  
-  
-# }
+    }
+}
 
 resource "aws_lb_target_group" "tg" {
   name                = "teds-asp-apps"

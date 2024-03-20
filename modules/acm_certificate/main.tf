@@ -1,8 +1,7 @@
-# ACM Certificate Configuration
-
 # Create ACM certificate for bellabeen.com
 resource "aws_acm_certificate" "bellabeen" {
-  domain_name       = "bellabeen.com"
+ domain_name       = "bellabeen.com"
+  subject_alternative_names = ["*.bellabeen.com"]
   validation_method = "DNS"
 
   # Specify DNS validation options
@@ -14,4 +13,3 @@ resource "aws_acm_certificate" "bellabeen" {
     Name = "bellabeen.com-cert"
   }
 }
-

@@ -122,7 +122,7 @@ module "alb" {
   vpc                 = module.vpc.vpc_id
   public_subnet_ids   = module.vpc.public_subnet_ids
   alb_security_group  = module.sg.alb_security_group_id
-  # alb_certificate_arn = module.acm_certificate.acm_certificate_arn
+ alb_certificate_arn = module.acm_certificate.acm_certificate_arn
 }
 
 module "acm_certificate" {
