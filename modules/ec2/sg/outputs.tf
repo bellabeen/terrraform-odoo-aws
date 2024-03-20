@@ -14,6 +14,11 @@ output "efs_security_group_id" {
 }
 
 output "app_security_group_id" {
-  description = "The ID of the created EFS security group."
+  description = "The ID of the created App security group."
   value       = aws_security_group.app_security_group.id
+}
+
+output "db_security_group_id" {
+  description = "The ID of the created DB security group."
+  value       = aws_security_group.db_security_group.id
 }

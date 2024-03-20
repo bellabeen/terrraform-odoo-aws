@@ -1,8 +1,3 @@
-# output "id" {
-#   description = "CIDR Block"
-#   value = aws_vpc.main.id
-# }
-
 output "vpc_id" {
   description = "The ID of the VPC"
   value       = aws_vpc.main.id
@@ -24,8 +19,19 @@ output "route_table_id" {
 }
 
 output "private_subnet_ids" {
-  description = "Private Subnet EC2 CIDR Blocks"
+  description = "Private Subnet EC2 CIDR Blocks ID"
   value = aws_subnet.subnet_private_ec2[*].id
+}
+
+output "public_subnet_ids" {
+  description = "Public Subnet CIDR Block ID"
+  value = aws_subnet.subnet_public[*].id
+}
+
+
+output "public_subnet_cidr_blocks" {
+  description = "Public Subnet CIDR Blocks"
+  value = aws_subnet.subnet_public[*].cidr_block
 }
 
 output "private_subnet_cidr_blocks" {
@@ -33,7 +39,8 @@ output "private_subnet_cidr_blocks" {
   value = aws_subnet.subnet_private_db[*].cidr_block
 }
 
-output "private_subnet_availability_zones" {
-  description = "Private Availability Zone"
-  value = aws_subnet.subnet_private_ec2[*].availability_zone
-}
+# output "private_subnet_availability_zones" {
+#   description = "Private Availability Zone"
+#   value = aws_subnet.subnet_private_ec2[*].availability_zone
+# }
+
