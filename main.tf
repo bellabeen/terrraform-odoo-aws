@@ -131,12 +131,10 @@ module "acm_certificate" {
 }
 
 
-module "route53" {
-  source = "./modules/route53"
-
-
-  # You can provide necessary variables here
-}
+# module "route53" {
+#   source = "./modules/route53"
+#   # You can provide necessary variables here
+# }
 
 
 # module "rds_cluster" {
