@@ -1,6 +1,5 @@
 # variable "managed_rules" {
-#   description = "A map of managed rules"
-#   type        = map(object({
+#   type = list(object({
 #     name           = string
 #     priority       = number
 #     excluded_rules = list(string)

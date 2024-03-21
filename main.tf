@@ -125,8 +125,6 @@ module "acm_certificate" {
 module "waf" {
   source = "./modules/waf"
   # You can provide necessary variables here
-  # managed_rules = aws_wafv2_web_acl.web_acl.rule
-  # web_acl_arn = aws_wafv2_web_acl.web_acl.arn
   alb_arn = module.alb.alb_app
 }
 

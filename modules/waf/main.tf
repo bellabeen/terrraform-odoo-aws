@@ -1,57 +1,66 @@
 resource "aws_wafv2_web_acl" "web_acl" {
-  name        = "teds-asp-webacl"
-  description = "TEDS ASP Web ACL"
+  name        = "contoh-webacl"
+  description = "Contoh of a managed rule."
+  scope       = "REGIONAL"
 
   default_action {
-    allow {} // or block {}
+    allow {}
   }
 
-  scope = "REGIONAL"
+  rule {
+    name     = "AWS-AWSManagedRulesCommonRuleSet"
+    priority = 0
 
-  visibility_config {
-    sampled_requests_enabled   = true
-    cloudwatch_metrics_enabled = true
-    metric_name                = "TEDS-ASP-webacl"
+    override_action {
+      count {}
+    }
+
+    statement {
+      managed_rule_group_statement {
+        name        = "AWSManagedRulesCommonRuleSet"
+        vendor_name = "AWS"
+
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
+          name = "SizeRestrictions_QUERYSTRING"
+        }
+
+        rule_action_override {
+          action_to_use {
+            count {}
+          }
+
+          name = "NoUserAgent_HEADER"
+        }
+
+        # scope_down_statement {
+        #   geo_match_statement {
+        #     country_codes = ["US", "NL"]
+        #   }
+        # }
+      }
+    }
+
+    # token_domains = ["mywebsite.com", "myotherwebsite.com"]
+
+    visibility_config {
+      cloudwatch_metrics_enabled = false
+      metric_name                = "contoh-rule-metric-name"
+      sampled_requests_enabled   = false
+    }
   }
-
-#   dynamic "rule" {
-#     for_each = var.managed_rules
-#     content {
-#       name = rule.value.name
-#       priority = rule.value.priority
-
-#       override_action {
-#         count {}
-#       }
-
-#       visibility_config {
-#         sampled_requests_enabled   = true
-#         cloudwatch_metrics_enabled = true
-#         metric_name                = "AWS-AWSManagedRulesCommonRuleSet"
-#       }
-
-#       statement {
-#         managed_rule_group_statement {
-#           vendor_name = "AWS"
-#           name        = rule.value.name
-          
-#           dynamic "excluded_rule" {
-#             for_each = rule.value.excluded_rules
-#             content {
-#               name = excluded_rule.value
-#             }
-#           }
-#         }
-#       }
-#     }
-#   }
 
   tags = {
-    "tunas:application-id" = "TEDS-ASP"
-    "tunas:cost-center"    = "ASP"
-    "Project"               = "TEDS ASP on AWS"
-    "tunas:env"             = "prod"
-    "created:by"            = "Terraform"
+    Name = "Contoh-Webacl"
+  }
+
+  visibility_config {
+    cloudwatch_metrics_enabled = false
+    metric_name                = "friendly-metric-name"
+    sampled_requests_enabled   = false
   }
 }
 
