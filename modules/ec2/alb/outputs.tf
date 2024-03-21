@@ -1,7 +1,7 @@
-output "target_group_app_alb" {
-  value = aws_lb_target_group.tg.arn
+output "tg_apps_alb_arn" {
+  value = aws_lb_target_group.tg_apps.arn
 }
 
-output "alb_app" {
+output "alb_ap" {
   value = aws_lb.alb.arn
 }

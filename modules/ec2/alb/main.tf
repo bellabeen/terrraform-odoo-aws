@@ -52,13 +52,13 @@ resource "aws_lb_listener" "https_listener" {
   # certificate_arn = "arn:aws:acm:ap-southeast-1:030150888082:certificate/8864d186-ff65-47a2-867b-e365e893a476"
     default_action {
         type             = "forward"
-        target_group_arn = aws_lb_target_group.tg.arn
+        target_group_arn = aws_lb_target_group.tg_apps.arn
         
     }
 }
 
 # Create target group apps port 8069
-resource "aws_lb_target_group" "tg" {
+resource "aws_lb_target_group" "tg_apps" {
   name                = "contoh-apps"
   port                = 8069
   protocol            = "HTTP"

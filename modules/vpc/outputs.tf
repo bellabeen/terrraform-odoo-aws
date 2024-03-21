@@ -44,8 +44,14 @@ output "private_db_subnet_ids" {
   value = aws_subnet.subnet_private_db[*].id
 }
 
-# output "private_subnet_availability_zones" {
-#   description = "Private Availability Zone"
-#   value = aws_subnet.subnet_private_ec2[*].availability_zone
+output "availability_zones" {
+  description = "Availability Zone"
+  value = aws_subnet.subnet_private_ec2[*].availability_zone
+}
+
+# output "availability_zone_ids" {
+#   description = "Availability Zone ID"
+#   value = 
+  
 # }
 

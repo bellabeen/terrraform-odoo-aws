@@ -125,7 +125,7 @@ module "acm_certificate" {
 module "waf" {
   source = "./modules/waf"
   # You can provide necessary variables here
-  alb_arn = module.alb.alb_app
+  alb_arn = module.alb.tg_apps_alb_arn
 }
 
 module "rds_cluster" {
@@ -144,3 +144,16 @@ module "rds_cluster" {
 #   source = "./modules/route53"
 #   # You can provide necessary variables here
 # }
+
+module "asg" {
+  source = "./modules/ec2/asg"
+  vpc_id = module.vpc.vpc_id
+  subnet_db_ids = module.vpc.private_db_subnet_ids
+  subnet_app_ids = module.vpc.private_ec2_subnet_ids
+  sg_app_ids = module.sg.app_security_group_id
+  # availability_zone = var.availability_zone
+  volume_size = 30
+  target_group_alb_arn = module.alb.tg_apps_alb_arn
+  app_instance_type = "t3.medium"
+  ami_app_id = "ami-08e4b984abde34a4f"
+}
