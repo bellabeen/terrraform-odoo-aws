@@ -1,14 +1,11 @@
+# Create ALB
 resource "aws_lb" "alb" {
-  name               = "teds-asp-alb"
+  name               = "contoh-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.alb_security_group]  # Ensure this is a list of security group IDs
   subnets            = var.public_subnet_ids
   tags = {
-    "tunas:application-id" = "TEDS-ASP"
-    "tunas:cost-center"    = "ASP"
-    "created:by"           = "CloudFormation"
-    "tunas:env"            = "prod"
     "map-migrated"         = "d-server-013zvevbqyyom2"
     "map-migrated-app"     = "web-server.asp"
   }
@@ -22,11 +19,9 @@ resource "aws_lb" "alb" {
 
   # Specify idle timeout as an argument
   idle_timeout = 4000
-#   idle_timeout = {
-#     timeout_seconds = 4000
-#   }
 }
 
+# Create http listener
 resource "aws_lb_listener" "http_listener" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 80
@@ -46,14 +41,15 @@ resource "aws_lb_listener" "http_listener" {
   }
 }
 
+# Creae https listener
 resource "aws_lb_listener" "https_listener" {
   load_balancer_arn = aws_lb.alb.arn
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-TLS13-1-2-2021-06"
   certificate_arn = var.alb_certificate_arn
+  # TODO Use this line, if use import certificate
   # certificate_arn = "arn:aws:acm:ap-southeast-1:030150888082:certificate/8864d186-ff65-47a2-867b-e365e893a476"
-
     default_action {
         type             = "forward"
         target_group_arn = aws_lb_target_group.tg.arn
@@ -61,8 +57,9 @@ resource "aws_lb_listener" "https_listener" {
     }
 }
 
+# Create target group apps port 8069
 resource "aws_lb_target_group" "tg" {
-  name                = "teds-asp-apps"
+  name                = "contoh-apps"
   port                = 8069
   protocol            = "HTTP"
   target_type         = "instance"
@@ -75,7 +72,7 @@ resource "aws_lb_target_group" "tg" {
   }
 
   tags = {
-    "tunas:application-id" = "TEDS-ASP"
+    "Name" = "TG-Contoh-Apps"
     "tunas:cost-center"    = "ASP"
     "tunas:env"            = "prod"
     "created:by"           = "CloudFormation"

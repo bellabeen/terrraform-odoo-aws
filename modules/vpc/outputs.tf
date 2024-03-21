@@ -18,7 +18,7 @@ output "route_table_id" {
   value = aws_vpc.main.default_route_table_id
 }
 
-output "private_subnet_ids" {
+output "private_ec2_subnet_ids" {
   description = "Private Subnet EC2 CIDR Blocks ID"
   value = aws_subnet.subnet_private_ec2[*].id
 }
@@ -37,6 +37,11 @@ output "public_subnet_cidr_blocks" {
 output "private_subnet_cidr_blocks" {
   description = "Private Subnet DB CIDR Blocks"
   value = aws_subnet.subnet_private_db[*].cidr_block
+}
+
+output "private_db_subnet_ids" {
+  description = "Private Subnet DB CIDR Blocks ID"
+  value = aws_subnet.subnet_private_db[*].id
 }
 
 # output "private_subnet_availability_zones" {

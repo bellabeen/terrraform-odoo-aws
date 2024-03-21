@@ -8,7 +8,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 4.16"
+      version = "~> 4.67"
     }
   }
   required_version = ">= 1.2.0"
@@ -128,19 +128,19 @@ module "waf" {
   alb_arn = module.alb.alb_app
 }
 
+module "rds_cluster" {
+  source = "./modules/rds_cluster"
+  vpc_id = module.vpc.vpc_id
+  db_security_group_id = module.sg.db_security_group_id
+  # subnet_db_ids = [for subnet_cidr in module.vpc.private_subnet_cidr_blocks : module.vpc.private_subnet_cidr_blocks]
+  subnet_db_ids = module.vpc.private_db_subnet_ids
+  db_master_username = "postgres"
+  db_master_password = "postgres"
+  # db_master_password  = random_password.db_master_password.result
+}
+
+# TODO: if use route53 uncomment this code
 # module "route53" {
 #   source = "./modules/route53"
 #   # You can provide necessary variables here
-# }
-
-
-# module "rds_cluster" {
-#   source = "./modules/rds_cluster"
-#   vpc_id = module.vpc.vpc_id
-#   db_security_group = module.sg.db_security_group_id
-#   subnet_db_ids = module.vpc.private_subnet_cidr_blocks
-#   subnet_group_a = "your_subnet_group_a_id"
-#   subnet_group_b = "your_subnet_group_b_id"
-#   db_username = "postgres"
-#   db_master_password = "postgres"
 # }
