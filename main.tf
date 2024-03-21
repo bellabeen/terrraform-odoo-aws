@@ -124,8 +124,11 @@ module "acm_certificate" {
 
 module "waf" {
   source = "./modules/waf"
+
   # You can provide necessary variables here
-  alb_arn = module.alb.tg_apps_alb_arn
+  alb_arn = module.alb.alb_arn
+  web_acl_arn = "arn:aws:wafv2:ap-southeast-1:030150888082:regional/webacl/contoh-webacl/280ca812-ba06-4cf0-b693-214f77785706"
+
 }
 
 module "rds_cluster" {
