@@ -157,6 +157,6 @@ module "asg" {
   # availability_zone = var.availability_zone
   volume_size = 30
   target_group_alb_arn = module.alb.tg_apps_alb_arn
-  app_instance_type = "t3.medium"
+  app_instance_type = "t3.micro"
   ami_app_id = "ami-08e4b984abde34a4f"
 }

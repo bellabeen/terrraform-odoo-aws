@@ -35,6 +35,14 @@ resource "aws_launch_template" "contoh_lt" {
     }
   }
 
+  tag_specifications {
+    resource_type = "volume"
+
+    tags = {
+      Name = "test"
+    }
+  }
+
   user_data = base64encode(<<EOF
      #!/bin/bash -x
      sudo apt-get -y install unzip
@@ -52,37 +60,21 @@ resource "aws_launch_template" "contoh_lt" {
   # user_data = filebase64("${path.module}/example.sh")
 }
 
-resource "aws_autoscaling_group" "contoh_asg" {
-  name               = "Contoh-WebApp"
-  vpc_zone_identifier = var.subnet_app_ids
-  desired_capacity   = 1
-  max_size           = 1
-  min_size           = 1
-  health_check_grace_period = 300
-  health_check_type         = "EC2"
-
-  launch_template {
-    id      = aws_launch_template.contoh_lt.id
-    version = aws_launch_template.contoh_lt.default_version
-  }
-
-  target_group_arns = [var.target_group_alb_arn]
-}
-
-# resource "aws_autoscaling_group" "test" {
-#   # availability_zones        = ["ap-southeast-1"]
+# resource "aws_autoscaling_group" "contoh_asg" {
+#   name               = "Contoh-WebApp"
 #   vpc_zone_identifier = var.subnet_app_ids
-#   name                      = "test"
-#   max_size                  = 1
-#   min_size                  = 1
+#   desired_capacity   = 1
+#   max_size           = 1
+#   min_size           = 1
 #   health_check_grace_period = 300
 #   health_check_type         = "EC2"
-#   # force_delete              = true
-#   # termination_policies      = ["OldestInstance"]
+
 #   launch_template {
-#     id      = aws_launch_template.tes.id
-#     version = aws_launch_template.tes.default_version
+#     id      = aws_launch_template.contoh_lt.id
+#     version = aws_launch_template.contoh_lt.default_version
 #   }
+
+#   target_group_arns = [var.target_group_alb_arn]
 # }
 
 # resource "aws_autoscaling_schedule" "ScheduledActionWorkingHours" {
