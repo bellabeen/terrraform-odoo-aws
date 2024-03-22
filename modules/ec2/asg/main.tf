@@ -29,17 +29,21 @@ resource "aws_launch_template" "contoh_lt" {
 
   tag_specifications {
     resource_type = "instance"
-
     tags = {
-      Name = "test"
+      Name        = "test-instance"
+      Environment = "Production"
+      "tunas:application-id" = "Contoh"
+      # Add more tags as needed
     }
   }
 
   tag_specifications {
     resource_type = "volume"
-
     tags = {
-      Name = "test"
+      Name        = "test-instance"
+      Environment = "Production"
+      "tunas:application-id" = "Contoh"
+      # Add more tags as needed
     }
   }
 
