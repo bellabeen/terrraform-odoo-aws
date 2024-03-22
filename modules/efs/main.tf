@@ -86,7 +86,13 @@ resource "aws_efs_access_point" "access_point_data" {
   }
 }
 
+resource "aws_efs_backup_policy" "policy_backup_data" {
+  file_system_id = aws_efs_file_system.efs_data.id
 
+  backup_policy {
+    status = "ENABLED"
+  }
+}
 
 resource "aws_efs_file_system" "efs_code" {
   encrypted           = true
@@ -176,6 +182,14 @@ resource "aws_efs_access_point" "access_point_code" {
   }
 }
 
+resource "aws_efs_backup_policy" "policy_backup_code" {
+  file_system_id = aws_efs_file_system.efs_code.id
+
+  backup_policy {
+    status = "ENABLED"
+  }
+}
+
 resource "aws_efs_file_system" "efs_session" {
   encrypted           = true
   performance_mode    = "maxIO"
@@ -261,5 +275,13 @@ resource "aws_efs_access_point" "access_point_session" {
   }
   tags = {
     Name                  = "/opt/contoh_session/"
+  }
+}
+
+resource "aws_efs_backup_policy" "policy_backup_session" {
+  file_system_id = aws_efs_file_system.efs_session.id
+
+  backup_policy {
+    status = "ENABLED"
   }
 }
