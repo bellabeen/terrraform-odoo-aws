@@ -164,3 +164,10 @@ module "asg" {
 module "dlm" {
   source = "./modules/ec2/dlm"
 }
+
+module "efs" {
+  source = "./modules/efs"
+  vpc_id = module.vpc.vpc_id
+  subnet_app_ids = module.vpc.private_ec2_subnet_ids
+  efs_security_group_id = module.sg.efs_security_group_id
+}
