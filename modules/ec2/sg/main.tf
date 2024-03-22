@@ -72,7 +72,7 @@ resource "aws_security_group" "app_security_group" {
     description = var.all_description_egress
     from_port   = 0
     to_port     = 0
-    protocol    = var.aws_local_protocol_icmp
+    protocol    = "-1"
   }
 
   ingress {
