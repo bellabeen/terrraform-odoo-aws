@@ -8,7 +8,7 @@ variable "subnet_app_ids" {
 }
 
 variable "efs_security_group_id" {
-
+  description = "EFS Security Group ID"
 }
 
 

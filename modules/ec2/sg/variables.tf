@@ -146,7 +146,6 @@ variable "aws_local_from_port_ssh" {
   description = "The end port for AWS local access"
 }
 
-
 variable "aws_local_to_port_ssh" {
   description = "The end port for AWS local access"
 }

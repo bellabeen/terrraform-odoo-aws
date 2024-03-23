@@ -52,6 +52,4 @@ output "availability_zones" {
 # output "availability_zone_ids" {
 #   description = "Availability Zone ID"
 #   value = 
-  
 # }
-

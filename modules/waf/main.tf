@@ -1,6 +1,6 @@
 resource "aws_wafv2_web_acl" "web_acl" {
-  name        = "contoh-webacl"
-  description = "Contoh of a managed rule."
+  name        = "example-webacl"
+  description = "Example of a managed rule."
   scope       = "REGIONAL"
 
   default_action {
@@ -48,13 +48,13 @@ resource "aws_wafv2_web_acl" "web_acl" {
 
     visibility_config {
       cloudwatch_metrics_enabled = false
-      metric_name                = "contoh-rule-metric-name"
+      metric_name                = "example-rule-metric-name"
       sampled_requests_enabled   = false
     }
   }
 
   tags = {
-    Name = "Contoh-Webacl"
+    Name = "Example-Webacl"
   }
 
   visibility_config {

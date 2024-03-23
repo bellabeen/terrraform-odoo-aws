@@ -75,6 +75,7 @@ resource "aws_route_table" "private_rt" {
     Name = "Private Route Table for App"
   }
 }
+
 # Integration Route Table Private EC2 Assosiated Subnet EC2 On 3 Availbility Zone
 resource "aws_route_table_association" "private_subnet_asso" {
   count          = length(aws_subnet.subnet_private_ec2)
