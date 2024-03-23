@@ -72,7 +72,7 @@ resource "aws_security_group" "app_security_group" {
     description = var.all_description_egress
     from_port   = 0
     to_port     = 0
-    protocol    = var.aws_local_protocol_icmp
+    protocol    = "-1"
   }
 
   ingress {
@@ -109,7 +109,7 @@ resource "aws_security_group" "efs_security_group" {
 
   egress {
     cidr_blocks = ["0.0.0.0/0"]
-    description = "open all egress"
+    description = "var.all_description_egress"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -145,5 +145,3 @@ resource "aws_security_group_rule" "app_ingress_efs" {
   source_security_group_id = aws_security_group.efs_security_group.id
   security_group_id        = aws_security_group.app_security_group.id
 }
-
-# Add similar blocks for other ingress rules as needed

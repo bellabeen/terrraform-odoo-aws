@@ -13,7 +13,6 @@ resource "aws_default_route_table" "default_rt" {
 
   tags = {
     Name = "Main Route Table"
-    # Add more tags as needed
   }
 }
 
@@ -64,7 +63,7 @@ resource "aws_subnet" "subnet_private_ec2" {
   cidr_block       = element(var.subnet_private_ec2_cidr, count.index)
   availability_zone = element(var.availability_zone, count.index)
   tags = {
-    Name = "Private Subnet App ${count.index + 1}"
+    Name = "Private Subnet App ${element(["A", "B", "C"], count.index)}"  # Append AZ identifier to subnet name
   }
 }
 
@@ -76,6 +75,7 @@ resource "aws_route_table" "private_rt" {
     Name = "Private Route Table for App"
   }
 }
+
 # Integration Route Table Private EC2 Assosiated Subnet EC2 On 3 Availbility Zone
 resource "aws_route_table_association" "private_subnet_asso" {
   count          = length(aws_subnet.subnet_private_ec2)
@@ -83,8 +83,11 @@ resource "aws_route_table_association" "private_subnet_asso" {
   route_table_id = aws_route_table.private_rt.id
 }
 
-# Create NAT Gateway
+# Create Elastic IP addresses (EIP) Default
 resource "aws_eip" "nat_eip" {
+  tags = {
+    Name = "Default EIP"
+  }
 }
 
 # Assosiated Subnet Private EC2 With NAT Gateway
@@ -111,7 +114,7 @@ resource "aws_subnet" "subnet_private_db" {
   cidr_block       = element(var.subnet_private_db_cidr, count.index)
   availability_zone = element(var.availability_zone, count.index)
   tags = {
-    Name = "Private Subnet DB ${count.index + 1}"
+    Name = "Private Subnet DB ${element(["A", "B", "C"], count.index)}"  # Append AZ identifier to subnet name
   }
 }
 

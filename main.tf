@@ -19,15 +19,16 @@ provider "aws" {
   # Create tags for the all resource add global tagging
   default_tags {
     tags = {
-      "tunas:env"            = "prod"
-      "tunas:application:id" = "TEDS"
-      "tunas:cost-center"    = "TDM"
-      "Project"              = "TEDS on AWS"
+      "company:env"            = "prod"
+      "company:application:id" = "Example"
+      "company:cost-center"    = "IT"
+      "Project"              = "Example on AWS"
       "created:by"           = "Terraform"
     }
   }
 }
 
+# Use Module VPC
 module "vpc" {
   source = "./modules/vpc"
 
@@ -38,6 +39,7 @@ module "vpc" {
   availability_zone       = var.availability_zone
 }
 
+# Use Module Security Group
 module "sg" {
   source = "./modules/ec2/sg"
 
@@ -81,32 +83,38 @@ module "sg" {
   ssl_vpn_from_db_port   = 5432
   ssl_vpn_to_db_port     = 5432
 
-  sg_db_name        = "SG-DB-CONTOH"
-  sg_db_description = "Security group for DB CONTOH"
+  sg_db_name        = "SG-DB-EXAMPLE"
+  sg_db_description = "Security group for DB EXAMPLE"
   sg_db_tags = {
-    "Name" = "SG-DB-CONTOH"
+    "Name" = "SG-DB-EXAMPLE"
   }
 
-  sg_alb_name        = "SG-ALB-CONTOH"
-  sg_alb_description = "Security group for ALB CONTOH"
+  sg_alb_name        = "SG-ALB-EXAMPLE"
+  sg_alb_description = "Security group for ALB EXAMPLE"
   sg_alb_tags = {
-    "Name" = "SG-ALB-CONTOH"
+    "Name" = "SG-ALB-EXAMPLE"
   }
 
-  sg_app_name        = "SG-APP-CONTOH"
-  sg_app_description = "Security group for APP CONTOH"
+  sg_app_name        = "SG-APP-EXAMPLE"
+  sg_app_description = "Security group for APP EXAMPLE"
   sg_app_tags = {
-    "Name" = "SG-APP-CONTOH"
+    "Name" = "SG-APP-EXAMPLE"
   }
 
-  sg_efs_name        = "SG-EFS-CONTOH"
-  sg_efs_description = "Security group for EFS CONTOH"
+  sg_efs_name        = "SG-EFS-EXAMPLE"
+  sg_efs_description = "Security group for EFS EXAMPLE"
   sg_efs_tags = {
-    "Name" = "SG-EFS-CONTOH"
+    "Name" = "SG-EFS-EXAMPLE"
   }
 }
 
+# Use Module Certificate Manager
+module "acm_certificate" {
+  source = "./modules/acm_certificate"
+  # You can provide necessary variables here
+}
 
+# Use Module Elastic Load Balancing
 module "alb" {
   source = "./modules/ec2/alb"
 
@@ -117,37 +125,32 @@ module "alb" {
   alb_certificate_arn = module.acm_certificate.acm_certificate_arn
 }
 
-module "acm_certificate" {
-  source = "./modules/acm_certificate"
-  # You can provide necessary variables here
-}
-
+# Use Module WAF
 module "waf" {
   source = "./modules/waf"
 
   # You can provide necessary variables here
   alb_arn = module.alb.alb_arn
-  web_acl_arn = "arn:aws:wafv2:ap-southeast-1:030150888082:regional/webacl/contoh-webacl/280ca812-ba06-4cf0-b693-214f77785706"
-
 }
 
+# Use Module RDS Aurora
 module "rds_cluster" {
   source = "./modules/rds_cluster"
   vpc_id = module.vpc.vpc_id
   db_security_group_id = module.sg.db_security_group_id
-  # subnet_db_ids = [for subnet_cidr in module.vpc.private_subnet_cidr_blocks : module.vpc.private_subnet_cidr_blocks]
   subnet_db_ids = module.vpc.private_db_subnet_ids
   db_master_username = "postgres"
   db_master_password = "postgres"
-  # db_master_password  = random_password.db_master_password.result
 }
 
+# Use Module Route53
 # TODO: if use route53 uncomment this code
 # module "route53" {
 #   source = "./modules/route53"
 #   # You can provide necessary variables here
 # }
 
+# Use Module Auto Scalling Group
 module "asg" {
   source = "./modules/ec2/asg"
   vpc_id = module.vpc.vpc_id
@@ -157,6 +160,19 @@ module "asg" {
   # availability_zone = var.availability_zone
   volume_size = 30
   target_group_alb_arn = module.alb.tg_apps_alb_arn
-  app_instance_type = "t3.medium"
+  app_instance_type = "t3.nano"
   ami_app_id = "ami-08e4b984abde34a4f"
+}
+
+# Use Module Data Life Cycle Manager
+module "dlm" {
+  source = "./modules/ec2/dlm"
+}
+
+# Use Module EFS
+module "efs" {
+  source = "./modules/efs"
+  vpc_id = module.vpc.vpc_id
+  subnet_app_ids = module.vpc.private_ec2_subnet_ids
+  efs_security_group_id = module.sg.efs_security_group_id
 }

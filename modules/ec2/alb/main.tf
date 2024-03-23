@@ -1,6 +1,6 @@
 # Create ALB
 resource "aws_lb" "alb" {
-  name               = "contoh-alb"
+  name               = "example-alb"
   internal           = false
   load_balancer_type = "application"
   security_groups    = [var.alb_security_group]  # Ensure this is a list of security group IDs
@@ -59,7 +59,7 @@ resource "aws_lb_listener" "https_listener" {
 
 # Create target group apps port 8069
 resource "aws_lb_target_group" "tg_apps" {
-  name                = "contoh-apps"
+  name                = "example-apps"
   port                = 8069
   protocol            = "HTTP"
   target_type         = "instance"
@@ -67,15 +67,12 @@ resource "aws_lb_target_group" "tg_apps" {
 
   health_check {
     interval            = 30
-    path                = "/api/health_check"
+    path                = "/"
     timeout             = 15
   }
 
   tags = {
-    "Name" = "TG-Contoh-Apps"
-    "tunas:cost-center"    = "ASP"
-    "tunas:env"            = "prod"
-    "created:by"           = "CloudFormation"
+    "Name" = "TG-Example-Apps"
   }
 
   # Specify load balancing algorithm directly as an argument
