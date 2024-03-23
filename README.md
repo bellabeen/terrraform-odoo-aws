@@ -43,3 +43,21 @@ No resources.
 
 No outputs.
 <!-- END_TF_DOCS -->
+
+## How to use
+
+To use your IAM credentials to authenticate the Terraform AWS provider, set the AWS_ACCESS_KEY_ID environment variable.
+
+> $ export AWS_ACCESS_KEY_ID=
+
+Now, set your secret key.
+> $ export AWS_SECRET_ACCESS_KEY=
+
+Initialize the directory
+> terraform init
+
+Format and validate the configuration
+> terraform fmt
+
+Create infrastructure
+> terraform apply
