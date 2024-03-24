@@ -30,7 +30,7 @@ module "sg" {
   # Inherit another module
   vpc_id                  = module.vpc.vpc_id
   aws_local_cidr_blocks   = [module.vpc.vpc_cidr_block]
-  efs_ingress_cidr_blocks = ["172.31.0.0/16"] # Example CIDR blocks for EFS ingress
+  efs_ingress_cidr_blocks = [module.vpc.vpc_cidr_block] # Example CIDR blocks for EFS ingress
 
   aws_all_cidr_blocks        = ["0.0.0.0/0"]
   aws_local_cidr_ipv4_blocks = ["20.0.0.0/16"]
@@ -92,40 +92,40 @@ module "sg" {
   }
 }
 
-# Use Module Certificate Manager
-module "acm_certificate" {
-  source = "./modules/acm_certificate"
-  # You can provide necessary variables here
-}
+# # Use Module Certificate Manager
+# module "acm_certificate" {
+#   source = "./modules/acm_certificate"
+#   # You can provide necessary variables here
+# }
 
-# Use Module Elastic Load Balancing
-module "alb" {
-  source = "./modules/ec2/alb"
+# # Use Module Elastic Load Balancing
+# module "alb" {
+#   source = "./modules/ec2/alb"
 
-  # Provide necessary arguments
-  vpc                 = module.vpc.vpc_id
-  public_subnet_ids   = module.vpc.public_subnet_ids
-  alb_security_group  = module.sg.alb_security_group_id
-  alb_certificate_arn = module.acm_certificate.acm_certificate_arn
-}
+#   # Provide necessary arguments
+#   vpc                 = module.vpc.vpc_id
+#   public_subnet_ids   = module.vpc.public_subnet_ids
+#   alb_security_group  = module.sg.alb_security_group_id
+#   alb_certificate_arn = module.acm_certificate.acm_certificate_arn
+# }
 
-# Use Module WAF
-module "waf" {
-  source = "./modules/waf"
+# # Use Module WAF
+# module "waf" {
+#   source = "./modules/waf"
 
-  # You can provide necessary variables here
-  alb_arn = module.alb.alb_arn
-}
+#   # You can provide necessary variables here
+#   alb_arn = module.alb.alb_arn
+# }
 
-# Use Module RDS Aurora
-module "rds_cluster" {
-  source = "./modules/rds_cluster"
-  vpc_id = module.vpc.vpc_id
-  db_security_group_id = module.sg.db_security_group_id
-  subnet_db_ids = module.vpc.private_db_subnet_ids
-  db_master_username = "postgres"
-  db_master_password = "postgres"
-}
+# # Use Module RDS Aurora
+# module "rds_cluster" {
+#   source = "./modules/rds_cluster"
+#   vpc_id = module.vpc.vpc_id
+#   db_security_group_id = module.sg.db_security_group_id
+#   subnet_db_ids = module.vpc.private_db_subnet_ids
+#   db_master_username = "postgres"
+#   db_master_password = "postgres"
+# }
 
 # Use Module Route53
 # TODO: if use route53 uncomment this code
@@ -134,29 +134,29 @@ module "rds_cluster" {
 #   # You can provide necessary variables here
 # }
 
-# Use Module Auto Scalling Group
-module "asg" {
-  source = "./modules/ec2/asg"
-  vpc_id = module.vpc.vpc_id
-  subnet_db_ids = module.vpc.private_db_subnet_ids
-  subnet_app_ids = module.vpc.private_ec2_subnet_ids
-  sg_app_ids = module.sg.app_security_group_id
-  # availability_zone = var.availability_zone
-  volume_size = 30
-  target_group_alb_arn = module.alb.tg_apps_alb_arn
-  app_instance_type = "t3.nano"
-  ami_app_id = "ami-08e4b984abde34a4f"
-}
+# # Use Module Auto Scalling Group
+# module "asg" {
+#   source = "./modules/ec2/asg"
+#   vpc_id = module.vpc.vpc_id
+#   subnet_db_ids = module.vpc.private_db_subnet_ids
+#   subnet_app_ids = module.vpc.private_ec2_subnet_ids
+#   sg_app_ids = module.sg.app_security_group_id
+#   # availability_zone = var.availability_zone
+#   volume_size = 30
+#   target_group_alb_arn = module.alb.tg_apps_alb_arn
+#   app_instance_type = "t3.nano"
+#   ami_app_id = "ami-08e4b984abde34a4f"
+# }
 
-# Use Module Data Life Cycle Manager
-module "dlm" {
-  source = "./modules/ec2/dlm"
-}
+# # Use Module Data Life Cycle Manager
+# module "dlm" {
+#   source = "./modules/ec2/dlm"
+# }
 
-# Use Module EFS
-module "efs" {
-  source = "./modules/efs"
-  vpc_id = module.vpc.vpc_id
-  subnet_app_ids = module.vpc.private_ec2_subnet_ids
-  efs_security_group_id = module.sg.efs_security_group_id
-}
+# # Use Module EFS
+# module "efs" {
+#   source = "./modules/efs"
+#   vpc_id = module.vpc.vpc_id
+#   subnet_app_ids = module.vpc.private_ec2_subnet_ids
+#   efs_security_group_id = module.sg.efs_security_group_id
+# }

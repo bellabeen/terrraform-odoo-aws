@@ -116,32 +116,21 @@ resource "aws_security_group" "efs_security_group" {
   }
 
   ingress {
-    cidr_blocks = var.efs_ingress_cidr_blocks
+    cidr_blocks = var.aws_local_cidr_blocks
     description = "from EC2 Subnet Avaibility Zone"
     from_port   = 2049
     to_port     = 2049
     protocol    = "tcp"
   }
 
+# TODO: reference another Security Group ID
+  ingress {
+    description = "From Security Group App ID"
+    from_port   = 2049
+    to_port     = 2049
+    protocol    = "tcp"
+    security_groups = ["${aws_security_group.app_security_group.id}"]
+  }
+
   tags = var.sg_efs_tags
-}
-
-resource "aws_security_group_rule" "efs_ingress_app" {
-  depends_on               = [aws_security_group.efs_security_group]
-  type                     = "ingress"
-  from_port                = 2049
-  to_port                  = 2049
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.app_security_group.id
-  security_group_id        = aws_security_group.efs_security_group.id
-}
-
-resource "aws_security_group_rule" "app_ingress_efs" {
-  depends_on               = [aws_security_group.efs_security_group]
-  type                     = "ingress"
-  from_port                = 2049
-  to_port                  = 2049
-  protocol                 = "tcp"
-  source_security_group_id = aws_security_group.efs_security_group.id
-  security_group_id        = aws_security_group.app_security_group.id
 }
