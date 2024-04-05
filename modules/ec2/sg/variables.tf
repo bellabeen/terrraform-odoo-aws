@@ -184,7 +184,9 @@ variable "sg_efs_tags" {
   description = "A map of tags to assign to the security group."
   type        = map(string)
 }
-variable "subnet_ec2_ids" {
+
+variable "subnet_ids" {
   description = "List of subnet IDs to allow ingress traffic from"
   type        = list(string)
+  # default     = ["subnet-0611f3c336b76ed4b", "subnet-08bb03e7cd1b9c53e", "subnet-022093418e315cbfd"]
 }
