@@ -122,7 +122,7 @@ resource "aws_autoscaling_schedule" "ScheduledActionWorkingHours" {
   max_size               = 2
   desired_capacity       = 2
   recurrence             = "0 1 * * MON-FRI"
-  start_time             = "2024-03-24T00:40:00Z"
+  start_time             = "2024-04-06T00:40:00Z"
 }
 
 # resource "aws_autoscaling_schedule" "ScheduledActionNonWorkingHours" {
