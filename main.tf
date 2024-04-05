@@ -26,7 +26,7 @@ module "vpc" {
 # Use Module Security Group
 module "sg" {
   source = "./modules/ec2/sg"
-  subnet_ids  = module.vpc.private_ec2_subnet_ids
+  subnet_ids  = module.vpc.private_ec2_subnet_blocks
 
   # Inherit another module
   vpc_id                  = module.vpc.vpc_id

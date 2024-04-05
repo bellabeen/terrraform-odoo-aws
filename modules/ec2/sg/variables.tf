@@ -190,3 +190,13 @@ variable "subnet_ids" {
   type        = list(string)
   # default     = ["subnet-0611f3c336b76ed4b", "subnet-08bb03e7cd1b9c53e", "subnet-022093418e315cbfd"]
 }
+
+variable "subnet_tags" {
+  description = "Map of subnet tags to allow ingress traffic from"
+  type        = map(string)
+  default     = {
+    "Private Subnet App A" = "Private Subnet App A",
+    "Private Subnet App B" = "Private Subnet App B",
+    "Private Subnet App C" = "Private Subnet App C",
+  }
+}

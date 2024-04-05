@@ -28,6 +28,11 @@ output "private_ec2_subnet_ids" {
   value = aws_subnet.subnet_private_ec2[*].id
 }
 
+output "private_ec2_subnet_blocks" {
+  description = "Private Subnet EC2 CIDR Blocks"
+  value = aws_subnet.subnet_private_ec2[*].cidr_block
+}
+
 output "public_subnet_ids" {
   description = "Public Subnet CIDR Block ID"
   value = aws_subnet.subnet_public[*].id

@@ -19,14 +19,22 @@ resource "aws_security_group" "db_security_group" {
     protocol    = var.aws_local_protocol_tcp
   }
 
+  # ingress {
+  #   cidr_blocks = var.aws_local_cidr_blocks
+  #   description = var.aws_local_description
+  #   from_port   = var.aws_local_from_db_port
+  #   to_port     = var.aws_local_to_db_port
+  #   protocol    = var.aws_local_protocol_tcp
+  # }
+
   dynamic "ingress" {
       for_each = var.subnet_ids
       content {
-        cidr_blocks = [data.aws_subnet.subnets[ingress.value].cidr_block]
+        cidr_blocks = [ingress.value]
         from_port   = var.aws_local_from_db_port
         to_port     = var.aws_local_to_db_port
         protocol    = var.aws_local_protocol_tcp
-        description = "Allow traffic from subnet ${ingress.key} to database"
+        description = "Allow traffic from ${ingress.key} to database"
       }
   }
 
@@ -39,50 +47,15 @@ resource "aws_security_group" "db_security_group" {
   }
 
   tags = var.sg_db_tags
-  
+
 }
 
 data "aws_subnet" "subnets" {
-  for_each = toset(var.subnet_ids)
+  for_each = toset(keys(var.subnet_tags))  # Use keys of the subnet tags map
   vpc_id   = var.vpc_id
-  tags     = { Name = "Private Subnet App A" }  # Replace "YourSubnetName" with the actual name/tag of the subnet
+  tags     = { Name = each.value }  # Use the tag value as the filter
 }
 
-# data "aws_subnet" "subnets" {
-#   for_each = {
-#     for id, name in var.subnet_ids : name => id
-#   }
-  
-#   vpc_id = var.vpc_id
-#   tags   = {
-#     Name = each.key  # Use the tag value as the filter
-#   }
-# }
-
-# data "aws_subnets" "existing_private_ec2_subnet" {
-#   filter {
-#     name = "vpc-id"
-#     values = [data.aws_vpc.existing_vpc.id]
-#   }
-  
-#   filter {
-#     name   = "tag:Name"
-#     values = ["Private Subnet App A", "Private Subnet App B", "Private Subnet App C"] # Add all the Name tag values here
-#   }
-# }
-
-# data "aws_subnet" "subnets" {
-#   for_each = {
-#     "Private Subnet App A" = "Private Subnet App A",
-#     "Private Subnet App B" = "Private Subnet App B",
-#     "Private Subnet App C" = "Private Subnet App C",
-#   }
-  
-#   vpc_id = var.vpc_id
-#   tags   = {
-#     Name = each.key  # Use the tag value as the filter
-#   }
-# }
 
 resource "aws_security_group" "alb_security_group" {
   name        = var.sg_alb_name
