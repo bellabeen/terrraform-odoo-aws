@@ -104,7 +104,7 @@ resource "aws_nat_gateway" "nat_gateway" {
 resource "aws_route" "private_subnet_route" {
   route_table_id         = aws_route_table.private_rt.id
   destination_cidr_block = "0.0.0.0/0"  # Default route for NAT Gateway
-  gateway_id             = aws_nat_gateway.nat_gateway.id
+  nat_gateway_id             = aws_nat_gateway.nat_gateway.id
 }
 
 # Create Private Subnet DB On 3 Availbility Zone

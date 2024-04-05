@@ -13,6 +13,11 @@ output "nat_gateway_id" {
   value = aws_nat_gateway.nat_gateway.id
 }
 
+output "igw_gateway_id" {
+  description = "IGW Gateway ID"
+  value = aws_nat_gateway.nat_gateway.id
+}
+
 output "route_table_id" {
   description = "Route Table Main Block"
   value = aws_vpc.main.default_route_table_id

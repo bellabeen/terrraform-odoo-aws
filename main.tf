@@ -26,6 +26,7 @@ module "vpc" {
 # Use Module Security Group
 module "sg" {
   source = "./modules/ec2/sg"
+  subnet_ec2_ids  = module.vpc.private_ec2_subnet_ids
 
   # Inherit another module
   vpc_id                  = module.vpc.vpc_id
@@ -34,7 +35,9 @@ module "sg" {
 
   aws_all_cidr_blocks        = ["0.0.0.0/0"]
   aws_local_cidr_ipv4_blocks = ["20.0.0.0/16"]
+  aws_local_private_ec2_ids = module.vpc.private_ec2_subnet_ids
   aws_local_description      = "AWS Local Segment"
+  aws_local_private_ec2_description = "From AWS local Private EC2 IDs"
   aws_local_protocol_tcp     = "tcp"
   aws_local_protocol_icmp    = "icmp"
   aws_local_protocol_ssh     = 22
@@ -127,13 +130,6 @@ module "sg" {
 #   db_master_password = "postgres"
 # }
 
-# Use Module Route53
-# TODO: if use route53 uncomment this code
-# module "route53" {
-#   source = "./modules/route53"
-#   # You can provide necessary variables here
-# }
-
 # # Use Module Auto Scalling Group
 # module "asg" {
 #   source = "./modules/ec2/asg"
@@ -159,4 +155,11 @@ module "sg" {
 #   vpc_id = module.vpc.vpc_id
 #   subnet_app_ids = module.vpc.private_ec2_subnet_ids
 #   efs_security_group_id = module.sg.efs_security_group_id
+# }
+
+# # Use Module Route53
+# TODO: if use route53 uncomment this code
+# module "route53" {
+#   source = "./modules/route53"
+#   # You can provide necessary variables here
 # }
