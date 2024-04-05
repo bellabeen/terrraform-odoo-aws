@@ -191,7 +191,7 @@ resource "aws_security_group" "efs_security_group" {
       }
   }
 
-# TODO: reference another Security Group ID
+# FIX: reference another Security Group ID
   ingress {
     description = "From Security Group App ID"
     from_port   = 2049
