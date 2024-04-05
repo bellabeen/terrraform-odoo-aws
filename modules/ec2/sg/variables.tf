@@ -85,8 +85,17 @@ variable "aws_local_cidr_blocks" {
   type        = list(string)
 }
 
+variable "aws_local_private_ec2_ids" {
+  description = "CIDR blocks IDs for AWS Private Subnet EC2"
+  type        = list(string)
+}
+
 variable "aws_local_description" {
   description = "The end port for AWS local access"
+}
+
+variable "aws_local_private_ec2_description" {
+  description = "From AWS local Private EC2 IDs"
 }
 
 variable "ssl_vpn_ho_description" {
@@ -174,4 +183,20 @@ variable "efs_ingress_cidr_blocks" {
 variable "sg_efs_tags" {
   description = "A map of tags to assign to the security group."
   type        = map(string)
+}
+
+variable "subnet_ids" {
+  description = "List of subnet IDs to allow ingress traffic from"
+  type        = list(string)
+  # default     = ["subnet-0611f3c336b76ed4b", "subnet-08bb03e7cd1b9c53e", "subnet-022093418e315cbfd"]
+}
+
+variable "subnet_tags" {
+  description = "Map of subnet tags to allow ingress traffic from"
+  type        = map(string)
+  default     = {
+    "Private Subnet App A" = "Private Subnet App A",
+    "Private Subnet App B" = "Private Subnet App B",
+    "Private Subnet App C" = "Private Subnet App C",
+  }
 }

@@ -13,6 +13,11 @@ output "nat_gateway_id" {
   value = aws_nat_gateway.nat_gateway.id
 }
 
+output "igw_gateway_id" {
+  description = "IGW Gateway ID"
+  value = aws_nat_gateway.nat_gateway.id
+}
+
 output "route_table_id" {
   description = "Route Table Main Block"
   value = aws_vpc.main.default_route_table_id
@@ -21,6 +26,11 @@ output "route_table_id" {
 output "private_ec2_subnet_ids" {
   description = "Private Subnet EC2 CIDR Blocks ID"
   value = aws_subnet.subnet_private_ec2[*].id
+}
+
+output "private_ec2_subnet_blocks" {
+  description = "Private Subnet EC2 CIDR Blocks"
+  value = aws_subnet.subnet_private_ec2[*].cidr_block
 }
 
 output "public_subnet_ids" {
